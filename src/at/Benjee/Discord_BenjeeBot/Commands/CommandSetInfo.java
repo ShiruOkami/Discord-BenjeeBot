@@ -11,9 +11,9 @@ import at.Benjee.Discord_BenjeeBot.Util.GenericEvent;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class CommandSetVerify {
+public class CommandSetInfo {
 	
-	public CommandSetVerify(GenericEvent genericEvent) {		
+	public CommandSetInfo(GenericEvent genericEvent) {		
 		setVerificationChannel(genericEvent);
 	}
 	
@@ -52,8 +52,8 @@ public class CommandSetVerify {
 		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(bot.getFileFolder() + "/" + bot.getChannelIDsFile())))) {
 			
-			bw.write(channelID);
-			bw.write(genericEvent.getBotInstance().getInfoChannelID());
+			bw.write(genericEvent.getBotInstance().getVerifyChannelID());
+			bw.write(channelID + "\n");
 			
 			bot.setVerifyChannelID(channelID);
 			
@@ -62,7 +62,7 @@ public class CommandSetVerify {
 		}
 		
 		genericEvent.getBotInstance().sendWelcomeMessageToChannel(event.getGuild().getTextChannelById(channelID));
-		event.getChannel().sendMessage("Updated channel for verification to " + args[1]).queue();
+		event.getChannel().sendMessage("Updated channel for info to " + args[1]).queue();
 		
 		return true;
 		

@@ -18,10 +18,16 @@ public class ReadyListener extends ListenerAdapter {
 	public void onReady(ReadyEvent event) {
 		
 		Guild guild = event.getJDA().getGuildById(_bot.getGuildID());
-		TextChannel tc = guild.getTextChannelById(_bot.getVerifyChannelID());
 		
-		if ((tc != null) && (tc.getHistoryFromBeginning(1).complete().size() < 1)) {
-			_bot.sendWelcomeMessageToChannel(tc);
+		TextChannel tcVerify = guild.getTextChannelById(_bot.getVerifyChannelID());
+		TextChannel tcInfo   = guild.getTextChannelById(_bot.getInfoChannelID());
+		
+		if ((tcVerify != null) && (tcVerify.getHistoryFromBeginning(1).complete().size() < 1)) {
+			_bot.sendWelcomeMessageToChannel(tcVerify);
+		}
+		
+		if ((tcInfo != null) && (tcInfo.getHistoryFromBeginning(1).complete().size() < 1)) {
+			_bot.sendWelcomeMessageToChannel(tcInfo);
 		}
 		
 	}

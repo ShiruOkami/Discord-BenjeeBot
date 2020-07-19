@@ -38,6 +38,7 @@ public class BenjeeBot {
 	private final String _welcomeMessageFile = "welcome_message.txt";
 	
 	private String _verifyChannelID = "0";
+	private String _infoChannelID = "0";
 	
 	public BenjeeBot() {
 		_builder = JDABuilder.createDefault(_botToken);
@@ -102,10 +103,18 @@ public class BenjeeBot {
 		return _verifyChannelID;
 	}
 	
+	public String getInfoChannelID() {
+		return _infoChannelID;
+	}
+	
 	public void setVerifyChannelID(String newID) {
 		_verifyChannelID = newID;
 	}
 
+	public void setInfoChannelID(String newID) {
+		_infoChannelID = newID;
+	}
+	
 	public void sendWelcomeMessageToChannel(TextChannel tc) {
 		
 		StringBuilder strBuilder = new StringBuilder();
@@ -122,6 +131,9 @@ public class BenjeeBot {
 		}
 
 		tc.sendMessage(strBuilder).queue();
+		tc.sendMessage("**By typing the !iagree command, you agree to the following:**\n\n" + 
+				"**a)** I am aware of the StreamPing role (to get notified when Benjee goes live) & can acquire it with !streamping\n" + 
+				"**b)** I agree with the rules").queue();
 
 	}
 	
@@ -158,6 +170,7 @@ public class BenjeeBot {
 						BufferedWriter bw = new BufferedWriter(new FileWriter(channelIDsFile))) {
 					
 					bw.write(br.readLine());
+					bw.write(br.readLine());
 					
 				}
 				
@@ -187,6 +200,7 @@ public class BenjeeBot {
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(new File(_fileFolder + "/" + _channelIDsFile)))) {
 			_verifyChannelID = br.readLine();
+			_infoChannelID = br.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
