@@ -1,0 +1,13 @@
+DONE * !streamping - Assign / Unassign the StreamPing Role
+DONE * !ping - Check how long it takes to respond
+
+DONE * Private DM when joining the Discord (Welcome Message)
+WIP  * Reaction Roles
+
+* 24h Reminders that the StreamPing exists
+	- Unsubscribe to automatic messages w/ a command through DMs
+
+* When user leaves, remove entry from SQLite Database
+
+
+* Please, for the love of god, start looking up how to use SQLite w/ Java -w-
