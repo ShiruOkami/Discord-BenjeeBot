@@ -1,6 +1,7 @@
 package at.Benjee.Discord_BenjeeBot.Listeners;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,13 +11,12 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GuildJoinListener extends ListenerAdapter {
-
-	private BenjeeBot _bot;
+	
+	private final BenjeeBot _bot;
 	
 	public GuildJoinListener(BenjeeBot bot) {
 		_bot = bot;
 	}
-	
 	
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
@@ -24,7 +24,7 @@ public class GuildJoinListener extends ListenerAdapter {
 		StringBuilder strBuilder = new StringBuilder();
 		String messageLine;
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(getClass().getResource("/resources/welcome_message.txt").getFile()))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(_bot.getFileFolder() + "/" + _bot.getWelcomeMessageFile())))) {
 			while ((messageLine = br.readLine()) != null) {
 				strBuilder.append(messageLine + "\n");
 			}

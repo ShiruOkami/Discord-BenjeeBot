@@ -1,14 +1,6 @@
 DONE * !streamping - Assign / Unassign the StreamPing Role
 DONE * !ping - Check how long it takes to respond
+DONE * !setverify - Set the verification channel
+DONE * !iagree - Gives you the Sparks Role, deletes the same message afterwards
 
 DONE * Private DM when joining the Discord (Welcome Message)
-WIP  * Reaction Roles
-
-* When pinging with @StreamPing, send people a reminder that role exists (w/ possibility to unsubscribe)
-	- IMPORTANT: Prevent getting REST API locked
-	- I have no clue how else to solve this properly -_-
-
-* When user leaves, remove entry from SQLite Database
-
-
-* Please, for the love of god, start looking up how to use SQLite w/ Java -w-
