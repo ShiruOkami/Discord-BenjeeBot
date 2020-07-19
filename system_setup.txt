@@ -4,8 +4,9 @@ DONE * !ping - Check how long it takes to respond
 DONE * Private DM when joining the Discord (Welcome Message)
 WIP  * Reaction Roles
 
-* 24h Reminders that the StreamPing exists
-	- Unsubscribe to automatic messages w/ a command through DMs
+* When pinging with @StreamPing, send people a reminder that role exists (w/ possibility to unsubscribe)
+	- IMPORTANT: Prevent getting REST API locked
+	- I have no clue how else to solve this properly -_-
 
 * When user leaves, remove entry from SQLite Database
 

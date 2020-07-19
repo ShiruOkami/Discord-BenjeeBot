@@ -21,10 +21,10 @@ public class CommandListener extends ListenerAdapter {
 		Message discordMsg = event.getMessage();
 		String rawMsg = discordMsg.getContentRaw();
 
-		if ((rawMsg.length() > 0) && (rawMsg.substring(0, _bot.getPrefix().length()).equals(_bot.getPrefix()))) {
+		if ((rawMsg.length() > 1) && (rawMsg.substring(0, _bot.getPrefix().length()).equals(_bot.getPrefix()))) {
 			
 			// Single argument commands
-			if ((!rawMsg.contains(" ")) && (rawMsg.length() > 1)) {
+			if (!rawMsg.contains(" ")) {
 				
 				// Ping Command
 				if (rawMsg.substring(_bot.getPrefix().length(), rawMsg.length()).equals("ping")) {
