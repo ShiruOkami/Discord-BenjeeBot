@@ -59,7 +59,7 @@ public class CommandCreatePronoun {
 			e.printStackTrace();
 		}
 		
-		event.getChannel().sendMessage(event.getMember().getAsMention() + " , I have create the role **" + args[1] + "**").queue();
+		event.getChannel().sendMessage(event.getMember().getAsMention() + " , I have created the role **" + args[1] + "**").queue();
 		return true;
 		
 	}
