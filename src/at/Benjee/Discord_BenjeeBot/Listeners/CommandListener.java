@@ -5,9 +5,11 @@ import java.util.HashMap;
 
 import at.Benjee.Discord_BenjeeBot.BenjeeBot;
 import at.Benjee.Discord_BenjeeBot.Commands.CommandStreamPingRole;
+import at.Benjee.Discord_BenjeeBot.Commands.CommandCreatePronoun;
 import at.Benjee.Discord_BenjeeBot.Commands.CommandIAgree;
 import at.Benjee.Discord_BenjeeBot.Commands.CommandPing;
 import at.Benjee.Discord_BenjeeBot.Commands.CommandSetInfo;
+import at.Benjee.Discord_BenjeeBot.Commands.CommandSetPronouns;
 import at.Benjee.Discord_BenjeeBot.Commands.CommandSetVerify;
 import at.Benjee.Discord_BenjeeBot.Util.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -27,8 +29,10 @@ public class CommandListener extends ListenerAdapter {
 		
 		_commands = new HashMap<String, Class<?>>();
 		
+		_commands.put("createpronoun", CommandCreatePronoun.class);
 		_commands.put("iagree", CommandIAgree.class);
 		_commands.put("ping", CommandPing.class);
+		_commands.put("pronouns", CommandSetPronouns.class);
 		_commands.put("setinfo", CommandSetInfo.class);
 		_commands.put("setverify", CommandSetVerify.class);
 		_commands.put("streamping", CommandStreamPingRole.class);

@@ -52,7 +52,7 @@ public class CommandSetVerify {
 		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(bot.getFileFolder() + "/" + bot.getChannelIDsFile())))) {
 			
-			bw.write(channelID);
+			bw.write(channelID + "\n");
 			bw.write(genericEvent.getBotInstance().getInfoChannelID());
 			
 			bot.setVerifyChannelID(channelID);

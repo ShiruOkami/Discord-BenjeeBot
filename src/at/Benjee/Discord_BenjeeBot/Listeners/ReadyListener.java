@@ -17,6 +17,8 @@ public class ReadyListener extends ListenerAdapter {
 	@Override
 	public void onReady(ReadyEvent event) {
 		
+		_bot.loadPronounsRoles();
+		
 		Guild guild = event.getJDA().getGuildById(_bot.getGuildID());
 		
 		TextChannel tcVerify = guild.getTextChannelById(_bot.getVerifyChannelID());

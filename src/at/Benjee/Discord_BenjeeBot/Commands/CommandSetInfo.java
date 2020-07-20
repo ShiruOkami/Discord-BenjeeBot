@@ -52,8 +52,8 @@ public class CommandSetInfo {
 		
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(bot.getFileFolder() + "/" + bot.getChannelIDsFile())))) {
 			
-			bw.write(genericEvent.getBotInstance().getVerifyChannelID());
-			bw.write(channelID + "\n");
+			bw.write(genericEvent.getBotInstance().getVerifyChannelID() + "\n");
+			bw.write(channelID);
 			
 			bot.setVerifyChannelID(channelID);
 			

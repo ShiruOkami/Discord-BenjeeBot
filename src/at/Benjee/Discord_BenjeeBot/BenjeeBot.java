@@ -9,14 +9,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
 import at.Benjee.Discord_BenjeeBot.Listeners.CommandListener;
 import at.Benjee.Discord_BenjeeBot.Listeners.GuildJoinListener;
 import at.Benjee.Discord_BenjeeBot.Listeners.ReadyListener;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -31,14 +35,19 @@ public class BenjeeBot {
 	private static final String _streamPingRoleName = "StreamPing";
 	private static final String _verifiedRoleName = "Sparks";
 	
-	private JDABuilder _builder;
+	private static final String _fileFolder = "resources";
 	
-	private final String _fileFolder = "resources";
-	private final String _channelIDsFile = "channelIDs.txt";
-	private final String _welcomeMessageFile = "welcome_message.txt";
+	private static final String _channelIDsFile = "channelIDs.txt";
+	private static final String _welcomeMessageFile = "welcome_message.txt";
+	private static final String _pronounsFile = "pronouns.txt";
+	
+	private JDABuilder _builder;
+	private JDA _jda;
 	
 	private String _verifyChannelID = "0";
 	private String _infoChannelID = "0";
+	
+	private HashMap<String, Role> _rolePronouns;
 	
 	public BenjeeBot() {
 		_builder = JDABuilder.createDefault(_botToken);
@@ -65,8 +74,8 @@ public class BenjeeBot {
 		_builder.setActivity(Activity.playing("with Raichus -w-"));
 		
 		// Connect to Discord
-		 _builder.build();
-		 
+		 _jda = _builder.build();
+		
 		return true;
 		
 	}
@@ -103,6 +112,14 @@ public class BenjeeBot {
 		return _verifyChannelID;
 	}
 	
+	public String getPronounsFile() {
+		return _pronounsFile;
+	}
+	
+	public HashMap<String, Role> getPronounList() {
+		return _rolePronouns;
+	}
+	
 	public String getInfoChannelID() {
 		return _infoChannelID;
 	}
@@ -133,7 +150,7 @@ public class BenjeeBot {
 		tc.sendMessage(strBuilder).queue();
 		tc.sendMessage("**By typing the !iagree command, you agree to the following:**\n\n" + 
 				"**a)** I am aware of the StreamPing role (to get notified when Benjee goes live) & can acquire it with !streamping\n" + 
-				"**b)** I agree with the rules").queue();
+				"**b)** I agree with the rules\n\nIf you have trouble w/ verification, shoot Benjee a DM! UwU").queue();
 
 	}
 	
@@ -157,7 +174,8 @@ public class BenjeeBot {
 		File resourceDirectory = new File(_fileFolder);
 		File channelIDsFile = new File(_fileFolder + "/" + _channelIDsFile);
 		File welcomeMessageFile = new File(_fileFolder + "/" + _welcomeMessageFile);
-	
+		File pronounsFile = new File (_fileFolder + "/" + _pronounsFile);
+		
 		try {	
 			
 			if (!resourceDirectory.exists()) {
@@ -166,10 +184,10 @@ public class BenjeeBot {
 			
 			if (!channelIDsFile.exists()) {
 				
-				try (InputStream in = getClass().getResourceAsStream("/resources/channelIDs.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				try (InputStream in = getClass().getResourceAsStream("/" + _fileFolder + "/" +  _channelIDsFile); BufferedReader br = new BufferedReader(new InputStreamReader(in));
 						BufferedWriter bw = new BufferedWriter(new FileWriter(channelIDsFile))) {
 					
-					bw.write(br.readLine());
+					bw.write(br.readLine() + "\n");
 					bw.write(br.readLine());
 					
 				}
@@ -178,8 +196,22 @@ public class BenjeeBot {
 			
 			if (!welcomeMessageFile.exists()) {
 				
-				try (InputStream in = getClass().getResourceAsStream("/resources/welcome_message.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				try (InputStream in = getClass().getResourceAsStream("/" + _fileFolder + "/" + _welcomeMessageFile); BufferedReader br = new BufferedReader(new InputStreamReader(in));
 						BufferedWriter bw = new BufferedWriter(new FileWriter(welcomeMessageFile))) {
+					
+					String line;
+					while ((line = br.readLine()) != null) {
+						bw.write(line + "\n");
+					}
+					
+				}
+				
+			}
+			
+			if (!pronounsFile.exists()) {
+				
+				try (InputStream in = getClass().getResourceAsStream("/" + _fileFolder + "/" + _pronounsFile); BufferedReader br = new BufferedReader(new InputStreamReader(in));
+						BufferedWriter bw = new BufferedWriter(new FileWriter(pronounsFile))) {
 					
 					String line;
 					while ((line = br.readLine()) != null) {
@@ -202,6 +234,38 @@ public class BenjeeBot {
 			_verifyChannelID = br.readLine();
 			_infoChannelID = br.readLine();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void loadPronounsRoles() {
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(_fileFolder + "/" + _pronounsFile)))) {
+			
+			Guild myGuild = _jda.getGuildById(_guildID);
+			String line = null;
+			
+			_rolePronouns = new HashMap<String, Role>();
+			
+			Role pronounRole = null;
+			List<Role> tempRoleList = null;
+			
+			while ((line = br.readLine()) != null) {
+				
+				tempRoleList = myGuild.getRolesByName(line, true);
+				
+				if (tempRoleList.size() < 1) {
+					pronounRole = myGuild.createRole().setName(line).complete();
+				} else {
+					pronounRole = tempRoleList.get(0);
+				}
+				
+				_rolePronouns.put(line, pronounRole);
+				
+			}
+			
+		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		
